@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onKlik(View v){
         String URL = String.valueOf(editTextURL.getText());
+        
         Toast.makeText(this, "Otevírám: "+URL, Toast.LENGTH_LONG).show();
         webView.loadUrl(URL);
         editTextURL.clearFocus();
