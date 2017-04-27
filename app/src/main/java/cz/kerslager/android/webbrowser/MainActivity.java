@@ -10,6 +10,8 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
     WebView webView;
@@ -50,11 +52,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onKlik(View v){
-        String URL = String.valueOf(editTextURL.getText());
-        
-        Toast.makeText(this, "Otevírám: "+URL, Toast.LENGTH_LONG).show();
-        webView.loadUrl(URL);
+    public void onKlik(View v) {
+        // načtení adresy včetně ořezání mezer na začátku a na konci
+        String vstup = String.valueOf(editTextURL.getText()).trim();
+        editTextURL.setText(vstup);
+        // doplnění chybějícího http://
+        if (!vstup.startsWith("http")) {
+            vstup = "http://" + vstup;
+            editTextURL.setText(vstup);
+        }
+        // zkusíme načíst odkaz (tohle asi není moc vhodná kontrola -> regexp?)
+        final URL url;
+        try {
+            url = new URL(vstup);
+        } catch (Exception e1) {
+            Toast.makeText(this, "Chyba v odkazu: " + vstup, Toast.LENGTH_LONG).show();
+        }
+        Toast.makeText(this, "Otevírám: " + vstup, Toast.LENGTH_LONG).show();
+        webView.loadUrl(vstup);
         editTextURL.clearFocus();
     }
 }
